@@ -9,7 +9,8 @@
 using namespace sf;
 using namespace std;
 
-const int WIDTH = 1600, HEIGHT = 900;
+const int WIDTH = 2560, HEIGHT = 1440, MAX_ITER = 10000;
+const float CHANGE_X = 0.233, CHANGE_Y = 0.655, ZOOM = 888888888.00;
 
 int main()
 {
@@ -31,17 +32,21 @@ int main()
         window.clear();
         for(int x = 1; x < WIDTH; x++) {
             for (int  y = 1; y < HEIGHT; y++) {
-                double dx = ((double)x - (double)WIDTH * 0.5)/100000.0 - 0.233;
-                double dy = ((double)y - (double)HEIGHT * 0.5)/100000.0 - 0.655;
+                double dx = ((double)x - (double)WIDTH * 0.5)/ZOOM - CHANGE_X;
+                double dy = ((double)y - (double)HEIGHT * 0.5)/ZOOM - CHANGE_Y;
                 double a = dx;
                 double b = dy;
-                for(double t = 1; t < 200; t++) {
+                //draw white
+                // pixel.setFillColor(Color::White);
+                // pixel.setPosition(Vector2f(x, y));
+                // window.draw(pixel);
+                for(double t = 1; t < MAX_ITER; t++) {
                     double d = a*a-b*b+dx;
                     b = 2*a*b+dy;
                     a = d;
-                    if(d>200) {
+                    if(d>MAX_ITER) {
                         //draw pixel
-                        pixel.setFillColor(Color(t *3, t, t/2));
+                        pixel.setFillColor(Color(t, t*0.5, t*4.0f));
                         pixel.setPosition(Vector2f(x, y));
                         window.draw(pixel);
                         cout << "drawn at: " << x << ' ' << y << endl;
